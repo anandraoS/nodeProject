@@ -40,9 +40,9 @@ async function createCourse() {
   const course = new Course({
     name: "NOde JS coursse",
     author: "anand",
-    category: 'web',
+    category: 'so',
     isPublished: true,
-    tags:['web'],
+    tags:null,
     price: 23
   });
   try{
@@ -50,7 +50,9 @@ async function createCourse() {
     console.log(result);
   }
   catch(ex){
-      console.log(ex.message);
+      for(field in ex.errors)
+        console.log(ex.errors[field].message);
+      //console.log(ex.message);
   }
 }
 
