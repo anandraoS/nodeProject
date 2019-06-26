@@ -33,7 +33,8 @@ async function listCourses() {
 }
 async function updateCourse(courseId){
   const course = await Course.update({_id: courseId},{
-    $set: {'author.name' :'Sahukari Ananda Rao'}
+    //$set: {'author.name' :'Sahukari Ananda Rao'}
+    $unset: {'author' :''}
   });
   // console.log(course);
   // course.author.name= 'ananda Rao';
