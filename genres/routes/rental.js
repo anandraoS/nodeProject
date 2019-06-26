@@ -1,9 +1,11 @@
 const { Rental, validate } = require("../models/rental");
 const { Movie } = require("../models/movie");
-const { Genre } = require("../models/genre");
 const { Customer } = require("../models/customer");
+const Fawn = require("fawn");
 const express = require("express");
 const router = express.Router();
+
+Fawn.init(mongoose);
 
 router.get("./", async (req, res) => {
   const rentals = await Rental.find().sort("-dateOut");
@@ -35,8 +37,23 @@ router.post("/", async (req, res) => {
       dailyRentalRate: movie.dailyRentalRate
     }
   });
-  rental = await rental.save();
-  movie.numberInStock--;
-  movie.save();
+  //   rental = await rental.save();
+  //   movie.numberInStock--;
+  //   movie.save();
+  try {
+    new Fawn.Task()
+      .save("rentals", rental) // here we are dealing direclty with collections so we are passing collection name itself
+      .update(
+        "movies",
+        { _id: movie._id },
+        {
+          $inc: { numberInStock: -1 }
+        }
+      )
+      .run();
+  } catch (error) {
+    return res.status(500).send("Transaction Failed");
+  }
+
   res.send(rental);
 });
