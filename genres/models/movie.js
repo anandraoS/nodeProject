@@ -40,6 +40,7 @@ function validateMovie(movie) {
       .min(0)
       .max(250)
   };
+  return Joi.validate(movie, schema);
 }
 
 exports.Movie  = Movie;
