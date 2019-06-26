@@ -36,18 +36,19 @@ async function createCourse(name, author) {
   }); 
   
   const result = await course.save();
-  console.log(result);
+  console.log(result); 
 }
 
 async function listCourses() { 
   const courses = await Course
     .find()
-    .select('name');
+    .populate('author','name -_id')
+    .select('name author');
   console.log(courses);
 }
 
 // createAuthor('Anand', 'LEarner', 'My Website');
 
- createCourse('Node Course', '5d139d4cefdf1c12f01cd14c');
+ //createCourse('Node Course', '5d139d4cefdf1c12f01cd14c');
 
-// listCourses();
+ listCourses();
