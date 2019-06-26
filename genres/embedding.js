@@ -32,10 +32,12 @@ async function listCourses() {
   console.log(courses);
 }
 async function updateCourse(courseId){
-  const course = await Course.findById(courseId);
-  console.log(course);
-  course.author.name= 'ananda Rao';
-  course.save();
+  const course = await Course.update({_id: courseId},{
+    $set: {'author.name' :'Sahukari Ananda Rao'}
+  });
+  // console.log(course);
+  // course.author.name= 'ananda Rao';
+  // course.save();
 }
 //createCourse('Node Course', new Author({ name: 'Anand' }));
 updateCourse('5d13a798838cea09f052dcec');
