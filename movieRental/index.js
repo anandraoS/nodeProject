@@ -1,4 +1,4 @@
-
+require('express-async-errors');
 const config = require("config");
 const Joi = require("joi");
 const error = require('./middleware/error');

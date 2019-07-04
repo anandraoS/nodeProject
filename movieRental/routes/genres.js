@@ -1,35 +1,27 @@
-const asynMiddleWare = require("../middleware/async");
 const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
 const { Genre, validate } = require("../models/genre");
 const express = require("express");
 const router = express.Router();
 
-router.get(
-  "/",
-  asynMiddleWare(async (req, res) => {
-    try {
-      const genres = await Genre.find().sort("name");
-      res.send(genres);
-    } catch (ex) {
-      next(ex);
-    }
-  })
-);
+router.get("/", async (req, res) => {
+  try {
+    const genres = await Genre.find().sort("name");
+    res.send(genres);
+  } catch (ex) {
+    next(ex);
+  }
+});
 
-router.post(
-  "/",
-  auth,
-  asynMiddleWare(async (req, res) => {
-    const { error } = validate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+router.post("/", auth, async (req, res) => {
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
-    let genre = new Genre({ name: req.body.name });
-    genre = await genre.save();
+  let genre = new Genre({ name: req.body.name });
+  genre = await genre.save();
 
-    res.send(genre);
-  })
-);
+  res.send(genre);
+});
 
 router.put("/:id", async (req, res) => {
   const { error } = validate(req.body);
