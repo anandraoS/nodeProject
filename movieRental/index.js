@@ -15,14 +15,27 @@ const auth = require("./routes/auth");
 const express = require("express");
 const app = express();
 process.on('uncaughtException', (ex)=>{
-  console.log('We got uncaught Exception');
   winston.error(ex.message, ex);
-})
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (ex)=>{
+  winston.error(ex.message,ex);
+  process.exit(1);
+
+});
+
 winston.add(new winston.transports.File({ filename: "logfile.log"}));
 winston.add(
-  new winston.transports.MongoDB({ db: "mongodb://localhost/movieRental" , level: 'error'})
+  new winston.transports.MongoDB({ db: "mongodb://localhost/movieRental",
+level: 'info'})
 );
- throw new Error('Something failed during startup');
+
+// throw new Error('Something failed during startup');
+
+const p = Promise.reject(new Error('something failed miserably'));
+
+p.then(()=> console.log('done'));
 if (!config.get("jwtPrivateKey")) {
   console.error("FATAL ERROR: jwtPrivateKey is not defined");
   process.exit(1);
