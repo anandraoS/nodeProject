@@ -14,15 +14,10 @@ const users = require("./routes/user");
 const auth = require("./routes/auth");
 const express = require("express");
 const app = express();
-process.on('uncaughtException', (ex)=>{
-  winston.error(ex.message, ex);
-  process.exit(1);
-});
 
+winston.handleExceptions(new winston.transports.File({filename:'unhandledExceptions.log'}));
 process.on('unhandledRejection', (ex)=>{
-  winston.error(ex.message,ex);
-  process.exit(1);
-
+  throw ex;
 });
 
 winston.add(new winston.transports.File({ filename: "logfile.log"}));
