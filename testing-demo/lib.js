@@ -3,9 +3,10 @@ const mail = require('./mail');
 
 // Testing numbers 
 module.exports.absolute = function(number) {
-  if (number >= 0) return number; 
+  return (number>=0) ? number: -number;
+  // if (number >= 0) return number; 
   // if (number < 0) return -number; 
-  return -number; 
+  // return -number; 
 }
 
 // Testing strings 
